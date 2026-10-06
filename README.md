@@ -29,14 +29,17 @@ npm test          # Parser regression tests
 | `src/components/UploadPanel.tsx`   | Drop zone, PDF selectors, ZIP selection and sample action         |
 | `src/components/ImportPreview.tsx` | Inspect detected cards before starting                            |
 | `src/components/QuestionView.tsx`  | Render original PDF regions, preserving diagrams and tables       |
-| `src/components/Practice.tsx`      | Select, check and advance through questions                       |
-| `src/components/Results.tsx`       | Accuracy, answer summary and retry mistakes                       |
+| `src/components/Setup.tsx`         | Practice/exam mode, session size, shuffle and timer setup         |
+| `src/components/Practice.tsx`      | Session navigation, answers, flags, feedback and timer            |
+| `src/components/Results.tsx`       | Accuracy, filters, PDF review and retry actions                   |
 | `src/lib/files.ts`                 | File validation and capped ZIP extraction                         |
 | `src/lib/pdf.ts`                   | Load PDF.js, extract positional text and assemble an exam         |
 | `src/lib/parseExam.ts`             | Pure question-boundary and answer-table parsing                   |
+| `src/lib/session.ts`                | Stable session ordering, scoring, navigation state and timer math |
 | `src/styles/global.css`            | Theme, upload layout, practice styles and mobile rules            |
 | `public/samples/`                  | Two original sample PDFs; not official exam questions             |
 | `tests/parser.test.ts`             | Column pairing, cover exclusion, continuations and mismatch tests |
+| `tests/session.test.ts`            | Session ordering, scoring, navigation state and timer tests        |
 
 ## Publish on Cloudflare Pages
 

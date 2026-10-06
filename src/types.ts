@@ -12,6 +12,19 @@ export interface Question {
   segments: Segment[];
   answer: Answer;
 }
+export type SessionMode = "practice" | "exam";
+export interface SessionSetup {
+  mode: SessionMode;
+  questionCount: number;
+  shuffle: boolean;
+  timerMinutes?: number;
+}
+export interface SessionScore {
+  correct: number;
+  incorrect: number;
+  unanswered: number;
+  accuracy: number;
+}
 export interface Exam {
   title: string;
   source: string;

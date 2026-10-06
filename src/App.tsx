@@ -3,13 +3,15 @@ import Header from "./components/Header";
 import UploadPanel from "./components/UploadPanel";
 import ImportPreview from "./components/ImportPreview";
 import Practice from "./components/Practice";
+import Setup from "./components/Setup";
 import { importExam } from "./lib/pdf";
-import type { Exam } from "./types";
+import type { Exam, SessionSetup } from "./types";
 export default function App() {
   const [exam, setExam] = useState<Exam>();
-  const [screen, setScreen] = useState<"upload" | "preview" | "practice">(
+  const [screen, setScreen] = useState<"upload" | "preview" | "setup" | "practice">(
     "upload",
   );
+  const [sessionSetup, setSessionSetup] = useState<SessionSetup>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   async function load(questions: File, answers: File) {
@@ -52,6 +54,7 @@ export default function App() {
   function reset() {
     void exam?.pdf.loadingTask.destroy();
     setExam(undefined);
+    setSessionSetup(undefined);
     setScreen("upload");
     setError("");
   }
@@ -69,11 +72,13 @@ export default function App() {
         ) : exam && screen === "preview" ? (
           <ImportPreview
             exam={exam}
-            onStart={() => setScreen("practice")}
+            onStart={() => setScreen("setup")}
             onBack={reset}
           />
+        ) : exam && screen === "setup" ? (
+          <Setup exam={exam} onStart={(setup: SessionSetup) => { setSessionSetup(setup); setScreen("practice"); }} onBack={() => setScreen("preview")} />
         ) : exam ? (
-          <Practice exam={exam} onExit={reset} />
+          <Practice exam={exam} setup={sessionSetup!} onExit={reset} onSetup={() => setScreen("setup")} />
         ) : null}
       </main>
       <footer>
