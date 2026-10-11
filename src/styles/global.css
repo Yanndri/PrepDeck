@@ -465,6 +465,15 @@ details p {
 .practice-actions button { min-height: 46px; }
 .practice-feedback { min-height: 28px; }
 .practice-feedback p { margin: 14px 0 0; font-weight: 650; }
+.explanation-panel { margin-top: 16px; padding: 15px; border: 1px solid #d6def0; border-radius: 7px; background: #f7f9ff; text-align: left; }
+.explain-button { min-height: 44px; color: #2457a6; border-color: #b7c9ea; background: white; }
+.explain-button:hover { background: #edf3ff; }
+.explanation-label { margin: 0 0 8px; font-size: 12px; font-weight: 750; color: #2457a6; text-transform: uppercase; letter-spacing: .7px; }
+.explanation-text { margin: 0 0 12px; line-height: 1.7; white-space: pre-wrap; }
+.explanation-error, .explanation-limitation { margin: 0 0 12px; line-height: 1.6; font-size: 13px; }
+.explanation-error { color: #a52622; }
+.explanation-limitation { color: #8a641e; }
+.math-notation { padding: 1px 4px; border-radius: 3px; background: #e9eefb; color: #273e70; font-family: "Cambria Math", Georgia, serif; white-space: nowrap; }
 .practice-card {
   background: #fff;
   padding: 25px;
@@ -582,6 +591,7 @@ progress::-webkit-progress-value {
 .result-item summary span:nth-child(2) { flex: 1; color: var(--muted); font-size: 13px; }
 .result-detail { padding: 0 16px 16px; }
 .result-detail .question-paper { text-align: left; }
+.result-detail .explanation-panel { margin-top: 16px; }
 .empty-results { padding: 24px; color: var(--muted); }
 @media (max-width: 700px) {
   .header {

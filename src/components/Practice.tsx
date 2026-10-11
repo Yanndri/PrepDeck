@@ -4,6 +4,7 @@ import { ANSWERS, type Answer, type Exam, type Question, type SessionSetup } fro
 import { createSessionOrder, formatDuration, isFlagged, unansweredCount, type Flags, type Responses } from "../lib/session";
 import QuestionView from "./QuestionView";
 import Results from "./Results";
+import ExplainMistake from "./ExplainMistake";
 
 export default function Practice({ exam, setup, onExit, onSetup }: { exam: Exam; setup: SessionSetup; onExit: () => void; onSetup: () => void }) {
   const [order, setOrder] = useState<Question[]>(() => createSessionOrder(exam.questions, setup));
@@ -65,6 +66,7 @@ export default function Practice({ exam, setup, onExit, onSetup }: { exam: Exam;
         <QuestionView exam={exam} question={q} />
         <div className="choices" role="group" aria-label="Choose your answer">{ANSWERS.map((a) => <button key={a} aria-pressed={(checked ?? drafts[q.number]) === a} disabled={!!checked} onClick={() => choose(a)} className={checked ? a === q.answer ? "correct" : a === checked ? "incorrect" : "" : drafts[q.number] === a ? "selected" : ""}>{a}{checked && a === q.answer ? " ✓" : ""}</button>)}</div>
         <div className="practice-feedback" aria-live="polite">{checked && <p className={checked === q.answer ? "good" : "bad"}>{checked === q.answer ? "Correct!" : `Not quite. The correct answer is ${q.answer}.`}</p>}{isExam && <p className="muted small">Correctness is hidden until you submit.</p>}</div>
+        {checked && <ExplainMistake question={q} selectedAnswer={checked} />}
         <div className="actions practice-actions"><button onClick={() => setFlags({ ...flags, [q.number]: !flags[q.number] })} aria-pressed={!!flags[q.number]}><Flag size={16} /> {flags[q.number] ? "Unflag" : "Flag"}</button><button onClick={() => move(index - 1)} disabled={index === 0}>Previous</button><button onClick={() => move(index + 1)} disabled={index === order.length - 1}>Next</button>{isExam ? <button className="primary" onClick={submitManual}>Submit exam</button> : checked ? <button className="primary" onClick={() => index === order.length - 1 ? finish() : move(index + 1)}>{index === order.length - 1 ? "View results" : "Next question"}</button> : <button className="primary" disabled={!drafts[q.number]} onClick={checkPractice}>Check answer</button>}</div>
       </article>
     </div>

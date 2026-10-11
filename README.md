@@ -56,7 +56,7 @@ Create a repository containing this project (exclude node_modules), then create 
 - Root directory: repository root, or `philnits-reviewer` if nested
 - Node version: 24
 
-Choose Git integration initially if you want automatic deployments; Direct Upload projects cannot simply be switched to Git integration later. No environment secrets, API keys, backend or database are required.
+Choose Git integration initially if you want automatic deployments; Direct Upload projects cannot simply be switched to Git integration later. No AWS credentials, accounts or backend are required. Copy `.env.example` to `.env.local` to override the browser explanation endpoint with `VITE_EXPLANATION_API_URL`.
 
 ## How PDF extraction works
 
@@ -75,7 +75,7 @@ Source references appear above each question. The original PDF wording and diagr
 - Text-based FE Subject A only. Subject B, OCR/scanned files, encrypted PDFs and arbitrary textbook layouts are outside this example's scope.
 - 25 MB per selected file or extracted PDF; at most 150 pages per PDF. These are app limits, not Cloudflare limits on locally selected files.
 - Parsing is heuristic. Always inspect the preview. Matching counts alone cannot prove two custom-named files belong to the same exam.
-- No AI explanations or official scaled-score conversion. Results show practice accuracy only.
+- Explanations are optional browser requests containing only the extracted question and choices; no PDF bytes or AWS credentials are sent. Results show practice accuracy only.
 - Session state stays in memory; refreshing clears files and progress. No accounts or cloud sync.
 - No PDF bytes are uploaded. The demo loads local hosted sample assets; Google Fonts is used for typography and can be removed from the CSS for self-contained font loading.
 - Browser/device memory still limits practical document size. No end-to-end browser or phone performance testing was performed in this environment.
