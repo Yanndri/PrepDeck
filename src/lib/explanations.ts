@@ -19,6 +19,9 @@ const choiceMarker = /(?:^|\s)([A-Da-d])(?:[.)\]:])\s+/g;
 const visualReference = /\b(?:diagram|figure|illustration|flowchart|schematic|graph|chart)\b|\bshown\s+(?:below|above)\b|\bas\s+shown\b|\brefer\s+to\s+(?:the\s+)?(?:figure|diagram|image)\b/i;
 
 export function prepareExplanation(question: Question, selectedAnswer: Answer): ExplanationPreparation {
+  if (!question.answer) {
+    return { limitation: "This question has no reviewed correct answer yet, so an explanation cannot be requested." };
+  }
   if (visualReference.test(question.text)) {
     return { limitation: "This question refers to a diagram or other visual material. Explanations for visual questions are not available yet." };
   }

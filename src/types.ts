@@ -10,7 +10,7 @@ export interface Question {
   number: number;
   text: string;
   segments: Segment[];
-  answer: Answer;
+  answer?: Answer;
 }
 export type SessionMode = "practice" | "exam";
 export interface SessionSetup {

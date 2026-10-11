@@ -36,10 +36,16 @@ npm test          # Parser regression tests
 | `src/lib/pdf.ts`                   | Load PDF.js, extract positional text and assemble an exam         |
 | `src/lib/parseExam.ts`             | Pure question-boundary and answer-table parsing                   |
 | `src/lib/session.ts`                | Stable session ordering, scoring, navigation state and timer math |
+| `src/lib/answerKey.ts`              | Manual/AI answer-key preparation, batching and validation          |
+| `src/lib/answerKeyPdf.ts`           | Browser-only reviewed answer-key PDF export                      |
+| `src/data/resources.ts`             | Curated publisher resource metadata                               |
+| `backend/src/handler.ts`            | Optional Lambda/Bedrock Nova 2 Lite answer-key draft operation    |
 | `src/styles/global.css`            | Theme, upload layout, practice styles and mobile rules            |
 | `public/samples/`                  | Two sample PDFs for local testing                                  |
 | `tests/parser.test.ts`             | Column pairing, cover exclusion, continuations and mismatch tests |
 | `tests/session.test.ts`            | Session ordering, scoring, navigation state and timer tests        |
+| `tests/answer-key.test.ts`         | Answer-key PDF export and parser round-trip coverage               |
+| `tests/answer-key-validation.test.ts` | AI answer validation against actual choices                    |
 
 ## Publish on Cloudflare Pages
 

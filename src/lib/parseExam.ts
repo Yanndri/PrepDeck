@@ -6,7 +6,7 @@ export function parseAnswers(pages: PageText[]): Map<number, Answer> {
   for (const page of pages) {
     for (const line of page.lines) {
       for (const match of line.text.matchAll(
-        /(?:^|\s)(\d{1,3})\s+([a-d])(?=\s|$)/gi,
+        /(?:^|\s)(?:Q(?:uestion)?\s*)?(\d{1,3})\s*[:.)-]?\s+([a-d])(?=\s|$)/gi,
       )) {
         const number = Number(match[1]);
         const answer = match[2].toUpperCase() as Answer;
@@ -25,7 +25,7 @@ export function parseAnswers(pages: PageText[]): Map<number, Answer> {
 
 export function parseQuestions(
   pages: PageText[],
-  answers: Map<number, Answer>,
+  answers?: Map<number, Answer>,
 ): Question[] {
   const starts: { number: number; page: number; y: number }[] = [];
   for (const page of pages) {
@@ -54,10 +54,7 @@ export function parseQuestions(
     throw new Error(
       "Repeated question numbers found. Upload one exam paper at a time.",
     );
-  if (
-    starts.length !== answers.size ||
-    starts.some((s, i) => s.number !== i + 1 || !answers.has(s.number))
-  ) {
+  if (answers && (starts.length !== answers.size || starts.some((s, i) => s.number !== i + 1 || !answers.has(s.number)))) {
     throw new Error(
       `Questions and answers do not match (${starts.length} questions, ${answers.size} answers). Check that both files belong to the same exam.`,
     );
@@ -86,7 +83,7 @@ export function parseQuestions(
       number: start.number,
       text,
       segments,
-      answer: answers.get(start.number)!,
+      answer: answers?.get(start.number),
     };
   });
 }

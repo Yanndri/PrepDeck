@@ -4,23 +4,26 @@ import UploadPanel from "./components/UploadPanel";
 import ImportPreview from "./components/ImportPreview";
 import Practice from "./components/Practice";
 import Setup from "./components/Setup";
+import AnswerKeyEditor from "./components/AnswerKeyEditor";
+import Resources from "./components/Resources";
 import { importExam } from "./lib/pdf";
 import type { Exam, SessionSetup } from "./types";
 export default function App() {
   const [exam, setExam] = useState<Exam>();
-  const [screen, setScreen] = useState<"upload" | "preview" | "setup" | "practice">(
+  const [screen, setScreen] = useState<"upload" | "preview" | "answer-key" | "setup" | "practice" | "resources">(
     "upload",
   );
+  const [returnScreen, setReturnScreen] = useState<typeof screen>("upload");
   const [sessionSetup, setSessionSetup] = useState<SessionSetup>();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
-  async function load(questions: File, answers: File) {
+  async function load(questions: File, answers?: File) {
     setBusy(true);
     setError("");
     try {
       const next = await importExam(questions, answers);
       setExam(next);
-      setScreen("preview");
+      setScreen(answers ? "preview" : "answer-key");
     } catch (e) {
       setError(
         (e as Error).message ||
@@ -60,21 +63,26 @@ export default function App() {
   }
   return (
     <>
-      <Header />
+      <Header onFindResources={() => { setReturnScreen(screen); setScreen("resources"); }} />
       <main>
         {error && (
           <div className="error global-error" role="alert">
             {error}
           </div>
         )}
-        {screen === "upload" ? (
+        {screen === "resources" ? (
+          <Resources onBack={() => setScreen(returnScreen === "resources" ? "upload" : returnScreen)} />
+        ) : screen === "upload" ? (
           <UploadPanel busy={busy} onImport={load} onDemo={demo} />
         ) : exam && screen === "preview" ? (
           <ImportPreview
             exam={exam}
             onStart={() => setScreen("setup")}
             onBack={reset}
+            onEditAnswerKey={() => setScreen("answer-key")}
           />
+        ) : exam && screen === "answer-key" ? (
+          <AnswerKeyEditor exam={exam} onSave={(updated) => { setExam(updated); setScreen("preview"); }} onBack={reset} />
         ) : exam && screen === "setup" ? (
           <Setup exam={exam} onStart={(setup: SessionSetup) => { setSessionSetup(setup); setScreen("practice"); }} onBack={() => setScreen("preview")} />
         ) : exam ? (

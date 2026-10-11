@@ -1,0 +1,8 @@
+{
+  "name": "prepdeck-answer-key-backend",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "tsc --noEmit" },
+  "dependencies": { "@aws-sdk/client-bedrock-runtime": "^3.879.0" },
+  "devDependencies": { "@types/aws-lambda": "^8.10.145", "@types/node": "^22.0.0", "typescript": "^5.7.0" }
+}

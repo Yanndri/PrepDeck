@@ -31,7 +31,7 @@ async function readPages(pdf: PDFDocumentProxy): Promise<PageText[]> {
 
 export async function importExam(
   questions: File,
-  answers: File,
+  answers?: File,
 ): Promise<Exam> {
   let questionPdf: PDFDocumentProxy | undefined;
   let answerPdf: PDFDocumentProxy | undefined;
@@ -39,11 +39,13 @@ export async function importExam(
     questionPdf = await getDocument({
       data: new Uint8Array(await questions.arrayBuffer()),
     }).promise;
-    answerPdf = await getDocument({
-      data: new Uint8Array(await answers.arrayBuffer()),
-    }).promise;
+    if (answers) {
+      answerPdf = await getDocument({
+        data: new Uint8Array(await answers.arrayBuffer()),
+      }).promise;
+    }
     const questionPages = await readPages(questionPdf);
-    const answerPages = await readPages(answerPdf);
+    const answerPages = answerPdf ? await readPages(answerPdf) : undefined;
     const source = questions.name
       .replace(/_(?:Questions|Question|Exam|Paper).*$/i, "")
       .replace(/\.pdf$/i, "");
@@ -51,7 +53,7 @@ export async function importExam(
       title: source.replace(/_/g, " "),
       source,
       pdf: questionPdf,
-      questions: parseQuestions(questionPages, parseAnswers(answerPages)),
+      questions: parseQuestions(questionPages, answerPages ? parseAnswers(answerPages) : undefined),
     };
   } catch (error) {
     await questionPdf?.loadingTask.destroy();

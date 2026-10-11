@@ -1,5 +1,6 @@
 import { useState } from "react";
 import type { Exam, SessionMode, SessionSetup } from "../types";
+import { unresolvedQuestions } from "../lib/answerKey";
 
 export default function Setup({ exam, onStart, onBack }: { exam: Exam; onStart: (setup: SessionSetup) => void; onBack: () => void }) {
   const [mode, setMode] = useState<SessionMode>("practice");
@@ -7,6 +8,7 @@ export default function Setup({ exam, onStart, onBack }: { exam: Exam; onStart: 
   const [shuffle, setShuffle] = useState(false);
   const [timer, setTimer] = useState(0);
   const presets = [10, 25, 50].filter((value) => value < exam.questions.length);
+  const unresolved = unresolvedQuestions(exam.questions).length;
   return <section className="workspace setup-screen">
     <div className="section-title"><div><span className="eyebrow">SESSION SETUP</span><h1>Choose how you want to study.</h1><p>{exam.title} · {exam.questions.length} imported questions</p></div><button onClick={onBack}>Change files</button></div>
     <div className="mode-grid">
@@ -18,7 +20,7 @@ export default function Setup({ exam, onStart, onBack }: { exam: Exam; onStart: 
       <label className="checkbox-row"><input type="checkbox" checked={shuffle} onChange={(e) => setShuffle(e.target.checked)} /> Shuffle question order</label>
       {mode === "exam" && <label><span>Optional timer</span><select value={timer} onChange={(e) => setTimer(Number(e.target.value))}><option value={0}>No timer</option><option value={15}>15 minutes</option><option value={30}>30 minutes</option><option value={60}>60 minutes</option></select></label>}
     </div>
-    <div className="notice">{mode === "practice" ? "Practice accuracy is calculated across the selected questions, including anything you leave unanswered." : "Exam mode hides correctness and scores until submission. The timer uses a fixed end time and keeps running if you switch tabs."}</div>
-    <div className="actions"><button onClick={onBack}>Back to preview</button><button className="primary" onClick={() => onStart({ mode, questionCount: count, shuffle, timerMinutes: timer || undefined })}>Start {mode}</button></div>
+    <div className="notice">{unresolved ? `${unresolved} question${unresolved === 1 ? " is" : "s are"} unresolved. Resolve the answer key before starting a scored session.` : mode === "practice" ? "Practice accuracy is calculated across the selected questions, including anything you leave unanswered." : "Exam mode hides correctness and scores until submission. The timer uses a fixed end time and keeps running if you switch tabs."}</div>
+    <div className="actions"><button onClick={onBack}>Back to preview</button><button className="primary" disabled={unresolved > 0} onClick={() => onStart({ mode, questionCount: count, shuffle, timerMinutes: timer || undefined })}>Start {mode}</button></div>
   </section>;
 }

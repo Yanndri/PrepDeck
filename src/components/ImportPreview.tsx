@@ -5,10 +5,12 @@ export default function ImportPreview({
   exam,
   onStart,
   onBack,
+  onEditAnswerKey,
 }: {
   exam: Exam;
   onStart: () => void;
   onBack: () => void;
+  onEditAnswerKey: () => void;
 }) {
   const [index, setIndex] = useState(0);
   return (
@@ -42,14 +44,16 @@ export default function ImportPreview({
           </select>
         </label>
         <span>
-          Detected answer: <strong>{exam.questions[index].answer}</strong>
+          Detected answer: <strong>{exam.questions[index].answer ?? "Unresolved"}</strong>
         </span>
       </div>
       <QuestionView exam={exam} question={exam.questions[index]} />
+      {exam.questions.some((question) => !question.answer) && <div className="notice unresolved-notice">This import has unresolved answers. Add them manually or generate a reviewable AI draft before starting a scored session.</div>}
       <div className="actions">
         <button onClick={onBack}>Change files</button>
+        <button onClick={onEditAnswerKey}>Edit answer key</button>
         <button className="primary" onClick={onStart}>
-          Start practice
+          Continue to setup
         </button>
       </div>
     </section>
