@@ -2,10 +2,12 @@
 :root {
   font-family: Inter, Arial, sans-serif;
   color: #30313b;
-  background: #f5f5f8;
+  background: #f4f7fb;
   font-synthesis: none;
   font-size: 16px;
-  --red: #e5322d;
+  --red: #eb5b3f;
+  --ink: #182b49;
+  --blue: #2d5fa8;
   --border: #e1e2e8;
   --muted: #737681;
 }
@@ -102,20 +104,33 @@ h3 {
   display: flex;
   align-items: center;
   gap: 36px;
-  background: white;
-  border-bottom: 1px solid var(--border);
+  background: #ffffffdd;
+  border-bottom: 1px solid #dce5f2;
+  box-shadow: 0 5px 24px #28466f0b;
 }
 .brand {
   display: flex;
   align-items: center;
   gap: 9px;
   text-decoration: none;
+  color: var(--ink);
   font-size: 25px;
   font-weight: 800;
   letter-spacing: -1px;
 }
-.brand svg {
-  color: var(--red);
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  color: white;
+  background: linear-gradient(145deg, #2d5fa8, #6d88c6);
+  box-shadow: 0 5px 12px #2d5fa833;
+}
+.brand-mark svg {
+  color: white;
   width: 30px;
   height: 30px;
 }
@@ -126,17 +141,20 @@ h3 {
   font-size: 12px;
   font-weight: 750;
   letter-spacing: 1.2px;
-  color: #777985;
+  color: #687895;
 }
-.header > a:last-child {
+.header-private {
   margin-left: auto;
-  font-size: 14px;
-  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #55709b;
+  font-size: 13px;
   font-weight: 600;
 }
 .intro {
   text-align: center;
-  padding: 55px 20px 28px;
+  padding: 68px 20px 32px;
 }
 .eyebrow {
   display: block;
@@ -152,6 +170,7 @@ h3 {
   line-height: 1.7;
   margin-bottom: 0;
 }
+.intro h1 { color: var(--ink); }
 .mobile-break {
   display: none;
 }
@@ -161,8 +180,9 @@ h3 {
   padding: 30px 40px;
   text-align: center;
   background: #fff;
-  border: 1px dashed #d1d3dc;
+  border: 1px dashed #bccce1;
   border-radius: 12px;
+  box-shadow: 0 14px 38px #29446d0d;
 }
 .upload-symbol {
   margin: 0 auto 20px;
@@ -331,6 +351,7 @@ main {
   margin: 45px auto;
   padding: 0 20px;
 }
+.workspace h1 { color: var(--ink); }
 .workspace h1 {
   font-size: 32px;
   letter-spacing: -1px;

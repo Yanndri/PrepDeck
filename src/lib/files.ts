@@ -4,7 +4,7 @@ export function validateFile(file: File) {
   if (file.size > MAX_BYTES)
     throw new Error(`“${file.name}” is too large. Each file must be 25 MB or smaller.`);
   if (!/\.(pdf|zip)$/i.test(file.name))
-    throw new Error(`“${file.name}” is not supported. Choose a PDF or an ITPEC ZIP archive.`);
+    throw new Error(`“${file.name}” is not supported. Choose a PDF or an exam ZIP archive.`);
 }
 export async function extractZip(file: File, onProgress?: (message: string) => void): Promise<[File, File]> {
   validateFile(file);
@@ -13,11 +13,16 @@ export async function extractZip(file: File, onProgress?: (message: string) => v
   const entries = Object.values(zip.files).filter(
     (f) => !f.dir && /\.pdf$/i.test(f.name) && !f.name.includes("__MACOSX"),
   );
-  const qs = entries.filter((f) => /FE[-_]A.*Questions/i.test(f.name));
-  const keys = entries.filter((f) => /FE[-_]A.*Answers/i.test(f.name));
+  const questionCandidates = entries.filter((f) => /question|exam|paper|test/i.test(f.name));
+  const answerCandidates = entries.filter((f) => /answer|key|solution/i.test(f.name));
+  // Keep legacy FE archives working, while preferring a generic question/key pair for other exams.
+  const subjectAQuestions = questionCandidates.filter((f) => /(?:FE|Subject)[-_ ]?A/i.test(f.name));
+  const subjectAAnswers = answerCandidates.filter((f) => /(?:FE|Subject)[-_ ]?A/i.test(f.name));
+  const qs = subjectAQuestions.length === 1 && subjectAAnswers.length === 1 ? subjectAQuestions : questionCandidates;
+  const keys = subjectAQuestions.length === 1 && subjectAAnswers.length === 1 ? subjectAAnswers : answerCandidates;
   if (qs.length !== 1 || keys.length !== 1)
     throw new Error(
-      "This ZIP must contain one FE-A Questions PDF and one FE-A Answers PDF. You can also extract and select the PDFs manually.",
+      "This ZIP must contain one question PDF and one answer key PDF. If it contains several exams, extract the matching pair and select them manually.",
     );
   // Stream selected entries with an output cap rather than expanding the whole archive.
   async function unpack(entry: (typeof entries)[number]): Promise<File> {

@@ -1,6 +1,6 @@
-# FE Practice
+# PrepDeck
 
-A browser-only PhilNITS FE Subject A reviewer built with React, TypeScript, Vite, PDF.js and JSZip. The light surfaces, red actions and file-upload layout are inspired by iLovePDF; this project uses its own name and interface.
+A browser-only exam study workspace built with React, TypeScript, Vite, PDF.js and JSZip. Import a text-based question paper and answer key from any exam, then create focused practice or exam sessions.
 
 ## Run locally
 
@@ -11,7 +11,7 @@ npm install
 npm run dev
 ```
 
-Open the URL printed by Vite. Try the original three-question sample, or select your own matching exam PDFs. You can also upload an ITPEC ZIP containing both Subject A and B: only the Subject A pair is selected.
+Open the URL printed by Vite. Try the included sample, or select your own matching exam PDFs. ZIP imports can contain a named question/paper PDF and answer key PDF; if an archive contains multiple exams, select the matching pair manually.
 
 ```sh
 npm run build     # Type-check and create dist/
@@ -25,7 +25,7 @@ npm test          # Parser regression tests
 | ---------------------------------- | ----------------------------------------------------------------- |
 | `src/App.tsx`                      | Import, preview and practice screen transitions; PDF lifetime     |
 | `src/types.ts`                     | Shared exam, question, answer and PDF-region types                |
-| `src/components/Header.tsx`        | Branding and official exam download link                          |
+| `src/components/Header.tsx`        | PrepDeck branding and browser-only privacy cue                     |
 | `src/components/UploadPanel.tsx`   | Drop zone, PDF selectors, ZIP selection and sample action         |
 | `src/components/ImportPreview.tsx` | Inspect detected cards before starting                            |
 | `src/components/QuestionView.tsx`  | Render original PDF regions, preserving diagrams and tables       |
@@ -37,7 +37,7 @@ npm test          # Parser regression tests
 | `src/lib/parseExam.ts`             | Pure question-boundary and answer-table parsing                   |
 | `src/lib/session.ts`                | Stable session ordering, scoring, navigation state and timer math |
 | `src/styles/global.css`            | Theme, upload layout, practice styles and mobile rules            |
-| `public/samples/`                  | Two original sample PDFs; not official exam questions             |
+| `public/samples/`                  | Two sample PDFs for local testing                                  |
 | `tests/parser.test.ts`             | Column pairing, cover exclusion, continuations and mismatch tests |
 | `tests/session.test.ts`            | Session ordering, scoring, navigation state and timer tests        |
 
@@ -71,8 +71,8 @@ Source references appear above each question. The original PDF wording and diagr
 
 ## Scope and limitations
 
-- Tested: production build, four parser tests, and detection of all 60 questions and 60 answer keys from the official April 2026 FE Subject A paper. Other years have not been validated.
-- Text-based FE Subject A only. Subject B, OCR/scanned files, encrypted PDFs and arbitrary textbook layouts are outside this example's scope.
+- Tested: production build and parser/session regression tests. The parser is designed for text-based exam papers with numbered questions and A–D answer keys.
+- OCR/scanned files, encrypted PDFs and arbitrary textbook layouts are outside this example's scope.
 - 25 MB per selected file or extracted PDF; at most 150 pages per PDF. These are app limits, not Cloudflare limits on locally selected files.
 - Parsing is heuristic. Always inspect the preview. Matching counts alone cannot prove two custom-named files belong to the same exam.
 - Explanations are optional browser requests containing only the extracted question and choices; no PDF bytes or AWS credentials are sent. Results show practice accuracy only.
@@ -80,8 +80,4 @@ Source references appear above each question. The original PDF wording and diagr
 - No PDF bytes are uploaded. The demo loads local hosted sample assets; Google Fonts is used for typography and can be removed from the CSS for self-contained font loading.
 - Browser/device memory still limits practical document size. No end-to-end browser or phone performance testing was performed in this environment.
 
-## Exam source and attribution
-
-Download official papers from https://www.itpec.org/pastexamqa/fe.html . ITPEC permits educational reuse under its stated terms and requires attribution such as `(2026S, FE, Subject-A, Q1)`. Uploaded filenames are shown as source labels; retain the original filenames or add more formal attribution if you publish a shared question bank. Official papers are not bundled with this example.
-
-This is an independent prototype, not affiliated with PhilNITS, ITPEC or iLovePDF.
+PrepDeck is an independent browser-only study tool. Uploaded filenames are shown as source labels; retain any attribution required by the exam provider if you share generated study material.

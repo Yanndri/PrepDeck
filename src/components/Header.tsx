@@ -1,21 +1,13 @@
-import { BookOpen } from "lucide-react";
+import { Layers3, ShieldCheck } from "lucide-react";
 export default function Header() {
   return (
     <header className="header">
       <a className="brand" href="./">
-        <BookOpen aria-hidden="true" />
-        <span>
-          FE<span className="red">Practice</span>
-        </span>
+        <span className="brand-mark"><Layers3 aria-hidden="true" /></span>
+        <span>Prep<span className="red">Deck</span></span>
       </a>
-      <span className="header-label">PHILNITS REVIEWER</span>
-      <a
-        href="https://www.itpec.org/pastexamqa/fe.html"
-        target="_blank"
-        rel="noreferrer"
-      >
-        Get exam PDFs ↗
-      </a>
+      <span className="header-label">EXAM STUDY WORKSPACE</span>
+      <span className="header-private"><ShieldCheck size={15} /> Private by default</span>
     </header>
   );
 }

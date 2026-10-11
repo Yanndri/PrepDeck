@@ -24,7 +24,7 @@ export default function App() {
     } catch (e) {
       setError(
         (e as Error).message ||
-          "Could not read those files. Try unencrypted Subject A PDFs.",
+          "Could not read those files. Try text-based, unencrypted exam PDFs.",
       );
     } finally {
       setBusy(false);
@@ -82,8 +82,8 @@ export default function App() {
         ) : null}
       </main>
       <footer>
-        <span>FEPractice · An independent study tool</span>
-        <span>FE Subject A · Files are cleared when you refresh</span>
+        <span>PrepDeck · An independent study tool</span>
+        <span>Any exam · Files are cleared when you refresh</span>
       </footer>
     </>
   );

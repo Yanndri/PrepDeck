@@ -44,13 +44,8 @@ export async function importExam(
     }).promise;
     const questionPages = await readPages(questionPdf);
     const answerPages = await readPages(answerPdf);
-    const cover = questionPages[0].lines.map((l) => l.text).join(" ");
-    if (/Subject\s*[- ]?B/i.test(cover))
-      throw new Error(
-        "Subject B is not supported yet. Select the Subject A PDFs.",
-      );
     const source = questions.name
-      .replace(/_Questions.*$/i, "")
+      .replace(/_(?:Questions|Question|Exam|Paper).*$/i, "")
       .replace(/\.pdf$/i, "");
     return {
       title: source.replace(/_/g, " "),
